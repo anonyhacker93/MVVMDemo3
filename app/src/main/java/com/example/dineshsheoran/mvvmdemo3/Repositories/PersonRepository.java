@@ -1,25 +1,26 @@
 package com.example.dineshsheoran.mvvmdemo3.Repositories;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.dineshsheoran.mvvmdemo3.Dao.DaoPerson;
 import com.example.dineshsheoran.mvvmdemo3.Model.Person;
 import com.example.dineshsheoran.mvvmdemo3.Model.PersonDatabase;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Dao;
 
 public class PersonRepository {
-    private static MutableLiveData<ArrayList<Person>>  _personArrayData;
+
     private static PersonRepository _instance;
     private static PersonDatabase personDatabase;
     private static DaoPerson _daoPerson;
 
-    public static PersonRepository getInstance(Application application) {
+
+    public static PersonRepository getInstance(Context application) {
         if (_instance == null) {
             _instance = new PersonRepository();
             init(application);
@@ -27,20 +28,14 @@ public class PersonRepository {
         return _instance;
     }
 
-    private static void init(Application application) {
+    private static void init(Context application) {
         personDatabase = PersonDatabase.getInstance(application);
         _daoPerson = personDatabase.getPersonDao();
-        ArrayList<Person> personArrayList = (ArrayList<Person>) _daoPerson.getAllDetails();
-        _personArrayData.setValue(personArrayList);
     }
 
 
-    public LiveData<ArrayList<Person>> getPersonDetails(){
-        return _personArrayData;
-    }
-
-    public ArrayList<Person> getPersonData() {
-     return new FetchPersonAsync(_daoPerson).execute();
+    public LiveData<List<Person>> getPersonDetails(){
+        return _daoPerson.getAllDetails();
     }
 
     public void addPerson(Person person){
@@ -89,26 +84,8 @@ public class PersonRepository {
         }
         @Override
         protected Void doInBackground(Person... persons) {
-            daoPerson.delete(persons[0]);
+            daoPerson.update(persons[0]);
             return null;
-        }
-    }
-
-    private static class FetchPersonAsync extends AsyncTask<Void,ArrayList<Person>,ArrayList<Person>>{
-        DaoPerson daoPerson;
-        FetchPersonAsync(DaoPerson daoPerson){
-            this.daoPerson = daoPerson;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Person> people) {
-            super.onPostExecute(people);
-        }
-
-        @Override
-        protected ArrayList<Person> doInBackground(Void... voids) {
-
-            return (ArrayList<Person>) daoPerson.getAllDetails();
         }
     }
 }

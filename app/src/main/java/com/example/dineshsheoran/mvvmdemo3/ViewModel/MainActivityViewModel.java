@@ -1,43 +1,36 @@
 package com.example.dineshsheoran.mvvmdemo3.ViewModel;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.dineshsheoran.mvvmdemo3.Model.Person;
 import com.example.dineshsheoran.mvvmdemo3.Repositories.PersonRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewModel extends ViewModel {
-private MutableLiveData<ArrayList<Person>> _personDetails;
-private PersonRepository _personRepository;
-private MutableLiveData<String> _mssg;
+    private LiveData<List<Person>> _personLiveData;
+    private PersonRepository _personRepository;
 
-    public MutableLiveData<ArrayList<Person>> getPersonDetails() {
-        return _personDetails;
-    }
 
-    public void init(Application application){
-        if(_personDetails!=null){
+    public void init(Context application) {
+        if (_personLiveData != null) {
             return;
         }
-        _mssg = new MutableLiveData<>();
-        _personDetails = new MutableLiveData<>();
         _personRepository = PersonRepository.getInstance(application);
-        _personDetails = (MutableLiveData)_personRepository.getPersonDetails();
 
+        _personLiveData = _personRepository.getPersonDetails();
     }
 
-    public void addNewData(){
-
-
-
-        _mssg.postValue("Heyya");
+    public LiveData<List<Person>> getPersonDetails() {
+        return _personLiveData;
     }
 
-    public MutableLiveData<String> getMessage(){
-        return _mssg;
+    public void addNewData() {//Invoked from Button
+        _personRepository.addPerson(new Person("AAA", "BBBB"));
     }
+
 }

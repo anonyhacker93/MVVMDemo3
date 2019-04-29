@@ -25,5 +25,5 @@ public interface DaoPerson {
     void update(Person person);
 
     @Query("Select * from person_table")
-    List<Person> getAllDetails();
+    LiveData<List<Person>> getAllDetails();
 }
