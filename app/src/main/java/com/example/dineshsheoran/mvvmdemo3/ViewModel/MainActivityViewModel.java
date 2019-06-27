@@ -33,4 +33,6 @@ public class MainActivityViewModel extends ViewModel {
         _personRepository.addPerson(new Person("AAA", "BBBB"));
     }
 
+
+
 }

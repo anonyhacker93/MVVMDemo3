@@ -14,11 +14,13 @@ import com.example.dineshsheoran.mvvmdemo3.ViewModel.MainActivityViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 public class MainActivity extends AppCompatActivity {
     MainActivityViewModel mainActivityViewModel;
